@@ -3,6 +3,9 @@
 xarr 
 yarr
 same index
+p0turn
+p1turn
+
     
     
     check horizontal  (int TAy) (code already generated)
@@ -24,10 +27,14 @@ for{
 
 qsort decending checkXArr
 for checkXArr{
-    if checkXArr[i]-checkXArr[i+1]!=1 return 0 
-    else ++good;
+    if checkXArr[i]-checkXArr[i+1]==1{
+        ++good;
+        if good>=5 return 1;
+    }
+    else good=1;
 }
-if good>=5 return 1;
+return 0;
+
 
 
 
@@ -48,10 +55,120 @@ for{
 
 
 way2 list every possible point and see if any of them matches xarr yarr
-int pxarr[9]
-
+int pxarr[9];
+int pyarr[9];
 for(int i=-4;i<5;++i){
     pxarr[i+4]=TAx-i;
-
+    pyarr[i+4]=TAy-i;
 }
-2345 6 78910
+//2345 6 78910
+
+
+
+    for(int i=0;i<elementOfXarr;++i){
+        for(int j=0;j<9;++j){
+            if(xarr[i]==pxarr[j]&&yarr[i]==pyarr[j]){
+                ++round;
+            }
+        }
+    }
+    round=0;
+    int checkIndex=calloc(round,sizeof(int));
+    for(int i=0;i<elementOfXarr;++i){
+        for(int j=0;j<9;++j){
+            if(xarr[i]==pxarr[j]&&yarr[i]==pyarr[j]){
+                checkIndex[round]=j;
+                ++round;
+            }
+        }
+    }
+    qsort checkIndex decending;
+    for(int i=0;i<round;++i){
+        if checkIndex[i]-checkIndex[i+1]==1{
+            ++good;
+            if good>=5 return 1;
+        }
+        else good=1;
+    }
+    return 0;
+  
+
+
+
+int compar(const void *a,const void *b){
+    return *(int*)b-*(int*)a;
+}
+
+
+
+int checkHorizontal(int turn,int TAy,int *xarr,int *yarr){
+    int round=0;
+    
+
+    for(int i=0;i<turn;++i){
+        if(yarr[i]==TAy) ++round;
+    }
+    if(round<5) return 0; 
+    int *checkXArr=(int*)calloc(round,sizeof(int));
+    int index=0;
+    for(int i=0;i<turn;++i){
+        if(yarr[i]==TAy) checkXArr[index++]=xarr[i];
+    }
+    qsort(checkXArr,round,sizeof(int), compar);
+    int good=1;
+    for(int i=0;i<round-1;++i){
+        if(checkXArr[i]-checkXArr[i+1]==1){
+            ++good;
+            if(good>=5){
+                free(checkXArr);
+                return 1;
+            }
+        }else good=1;
+    }
+    free(checkXArr);
+    return 0;
+}
+
+
+int checkDiagonalR(int turn,int TAx,int TAy,int *xarr,int *yarr){
+    int pxarr[9];
+    int pyarr[9];
+    int round=0;
+    
+    for(int i=-4;i<5;++i){
+        pxarr[i+4]=TAx-i;
+        pyarr[i+4]=TAy-i;
+    }
+
+    for(int i=0;i<turn;++i){
+       for(int j=0;j<9;++j){
+            if(xarr[i]==pxarr[j]&&yarr[i]==pyarr[j]){
+                ++round;
+            }
+        } 
+    }
+    if(round<5) return 0;
+    int *checkIndex=(int*)calloc(round,sizeof(int));
+    int index=0;
+    for(int i=0;i<turn;++i){
+        for(int j=0;j<9;++j){
+            if(xarr[i]==pxarr[j]&&yarr[i]==pyarr[j]){
+                checkIndex[index++]=j;
+            }
+        }
+    }
+    qsort(checkIndex,round,sizeof(int),compar);
+    int good=1;
+    for(int i=0;i<round-1;++i){
+        if (checkIndex[i]-checkIndex[i+1]==1){
+            ++good;
+            if(good>=5){
+                free(checkIndex);
+                return 1;
+            }
+        }
+        else good=1;
+    }
+    free(checkIndex);
+    return 0;
+}

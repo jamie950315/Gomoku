@@ -1,0 +1,1 @@
+printf("Score  P1:%d   P2:%d\n",p1score,p2score);
