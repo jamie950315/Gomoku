@@ -138,10 +138,12 @@ void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*p
         *TAy=0;
         *passedTime=0;
         *t=time(NULL);
+
         *xarr1=(int*)calloc(*size**size,sizeof(int));
         *yarr1=(int*)calloc(*size**size,sizeof(int));
         *xarr2=(int*)calloc(*size**size,sizeof(int));
         *yarr2=(int*)calloc(*size**size,sizeof(int));
+
         *regretTime1=regretTime;
         *regretTime2=regretTime;
         *justRegret=false;
@@ -203,7 +205,6 @@ void draw(int TAx,int TAy,int player,int size, int *xarr1, int *yarr1, int turn1
     }
 }
 
-
 void render(int TAx,int TAy,int player,int size, int *xarr1, int *yarr1, int turn1, int *xarr2, int *yarr2, int turn2, int p1score, int p2score, int regret, int regretTime1, int regretTime2, bool justRegret, int timer, int countdown, int passedTime){
     draw(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2);
     printf("Score  P1:%d   P2:%d\n",p1score,p2score);
@@ -213,10 +214,8 @@ void render(int TAx,int TAy,int player,int size, int *xarr1, int *yarr1, int tur
     printf("Enter your move: ");
 }
 
-
 int main(void){
     int mode=0;
-    
 
     while(mode==0){
         int size=15;
@@ -244,8 +243,6 @@ int main(void){
         
         int killRate=3;
         
-        
-
         int *xarr1=(int*)calloc(size*size,sizeof(int));
         int *yarr1=(int*)calloc(size*size,sizeof(int));
         int *xarr2=(int*)calloc(size*size,sizeof(int));
@@ -300,16 +297,12 @@ int main(void){
                 countdown=enterInt(countdown);
             }
             
-
-            
-
             printf("Apply to which mode? (1/2):");
             mode=enterInt(mode);
             while(mode!=1&&mode!=2) {
                 printf("\nEnter a valid option: ");
                 mode=enterInt(mode);
             }
-
 
         }else if(mode==4){
             free(xarr1);
@@ -350,7 +343,7 @@ int main(void){
             t=time(NULL);
         }
 
-        while(mode==1){
+    while(mode==1){
        
         if(kbhit()){
             move=getch();
@@ -452,12 +445,9 @@ int main(void){
             t=time(NULL);
         }
 
-        }
+    }
 
-
-        while(mode==2){
-        
-        //add random kill some coordinates
+    while(mode==2){
         
         if(kbhit()){
             move=getch();
@@ -577,7 +567,7 @@ int main(void){
         }
         
         
-        }
+    }
     
     }
     
