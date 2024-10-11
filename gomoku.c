@@ -90,6 +90,16 @@ int enterInt(int enterInt){
    return enterInt;
 }
 
+void kill(int turn,int*xarr,int*yarr,int killRate){ 
+        int killNumber=turn*killRate*0.1;
+
+        for (int i=0;i<killNumber; ++i) {
+            int index=rand() % turn;
+            xarr[index]=-1; 
+            yarr[index]=-1; 
+        }
+    }
+
 void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*player,int*TAx,int*TAy,int*xarr1,int*yarr1,int*xarr2,int*yarr2,int p1score,int p2score,int*regretTime1,int*regretTime2,int*passedTime,time_t*t,int regretTime,bool*justRegret){
     printf("\n");
     printf("\n");
@@ -135,6 +145,7 @@ void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*p
         *regretTime1=regretTime;
         *regretTime2=regretTime;
         *justRegret=false;
+        
 
     }
 
@@ -192,6 +203,17 @@ void draw(int TAx,int TAy,int player,int size, int *xarr1, int *yarr1, int turn1
     }
 }
 
+
+void render(int TAx,int TAy,int player,int size, int *xarr1, int *yarr1, int turn1, int *xarr2, int *yarr2, int turn2, int p1score, int p2score, int regret, int regretTime1, int regretTime2, bool justRegret, int timer, int countdown, int passedTime){
+    draw(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2);
+    printf("Score  P1:%d   P2:%d\n",p1score,p2score);
+    if(regret) printf("Regret P1:%d   P2:%d\n",regretTime1,regretTime2);
+    printf("Player %d's turn\n",player);
+    if(timer) printf("Time left: %d\n",countdown-passedTime);
+    printf("Enter your move: ");
+}
+
+
 int main(void){
     int mode=0;
     
@@ -219,6 +241,9 @@ int main(void){
         time_t t=time(NULL);
         int countdown=5;
         int passedTime=0;
+        
+        int killRate=3;
+        
         
 
         int *xarr1=(int*)calloc(size*size,sizeof(int));
@@ -274,6 +299,9 @@ int main(void){
                 printf("Enter countdown time: ");
                 countdown=enterInt(countdown);
             }
+            
+
+            
 
             printf("Apply to which mode? (1/2):");
             mode=enterInt(mode);
@@ -308,21 +336,17 @@ int main(void){
             printf("\n");
             printf("Enter win score: ");
             winScore=enterInt(winScore);
-            draw(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2);
-            printf("Score  P1:%d   P2:%d\n",p1score,p2score);
-            if(regret) printf("Regret P1:%d   P2:%d\n",regretTime1,regretTime2);
-            printf("Player %d's turn\n",player);
-            printf("Enter your move: ");
+            printf("Enter kill rate: ");
+            killRate=enterInt(killRate);
+
+            render(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2, p1score, p2score, regret, regretTime1, regretTime2, justRegret, timer, countdown, passedTime);
             
+            t=time(NULL);
         }
 
         if(mode==1){
-            draw(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2);
-            printf("Score  P1:%d   P2:%d\n",p1score,p2score);
-            if(regret) printf("Regret P1:%d   P2:%d\n",regretTime1,regretTime2);
-            printf("Player %d's turn\n",player);
-            if(timer) printf("Time left: %d\n",countdown-passedTime);
-            printf("Enter your move: ");
+            render(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2, p1score, p2score, regret, regretTime1, regretTime2, justRegret, timer, countdown, passedTime);
+            
             t=time(NULL);
         }
 
@@ -408,12 +432,7 @@ int main(void){
                         justRegret=true;
                     }
             }
-            draw(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2);
-            printf("Score  P1:%d   P2:%d\n",p1score,p2score);
-            if(regret) printf("Regret P1:%d   P2:%d\n",regretTime1,regretTime2);
-            printf("Player %d's turn\n",player);
-            if(timer)printf("Time left: %d\n",countdown-passedTime);
-            printf("Enter your move: ");
+            render(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2, p1score, p2score, regret, regretTime1, regretTime2, justRegret, timer, countdown, passedTime);
             
         }
 
@@ -426,14 +445,10 @@ int main(void){
                 }else if(player==2){
                     player=1;
                 }
-                
             }
-            draw(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2);
-            printf("Score  P1:%d   P2:%d\n",p1score,p2score);
-            if(regret) printf("Regret P1:%d   P2:%d\n",regretTime1,regretTime2);
-            printf("Player %d's turn\n",player);
-            printf("Time left: %d\n",countdown-passedTime);
-            printf("Enter your move: ");
+
+            render(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2, p1score, p2score, regret, regretTime1, regretTime2, justRegret, timer, countdown, passedTime);
+            
             t=time(NULL);
         }
 
@@ -481,6 +496,7 @@ int main(void){
                     if(checkHorizontal(turn1,TAy,xarr1,yarr1)||checkHorizontal(turn1,TAx,yarr1,xarr1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,-1)){
                     
                         ++p1score;
+                        kill(turn1, xarr1, yarr1, killRate);
                         if(p1score>=winScore){
                             win=1;
                             end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
@@ -501,6 +517,7 @@ int main(void){
                     if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
                         
                         ++p2score;
+                        kill(turn2, xarr2, yarr2, killRate);
                         if(p2score>=winScore){
                             win=2;
                             end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
@@ -539,13 +556,8 @@ int main(void){
                         justRegret=true;
                     }
             }
+            render(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2, p1score, p2score, regret, regretTime1, regretTime2, justRegret, timer, countdown, passedTime);
             
-            draw(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2);
-            printf("Score  P1:%d   P2:%d\n",p1score,p2score);
-            if(regret) printf("Regret P1:%d   P2:%d\n",regretTime1,regretTime2);
-            printf("Player %d's turn\n",player);
-            if(timer)printf("Time left: %d\n",countdown-passedTime);
-            printf("Enter your move: ");
         }
 
         if(difftime(time(NULL),t)>=1&&timer&&!justRegret){
@@ -559,12 +571,8 @@ int main(void){
                 }
                 
             }
-            draw(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2);
-            printf("Score  P1:%d   P2:%d\n",p1score,p2score);
-            if(regret) printf("Regret P1:%d   P2:%d\n",regretTime1,regretTime2);
-            printf("Player %d's turn\n",player);
-            printf("Time left: %d\n",countdown-passedTime);
-            printf("Enter your move: ");
+            render(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2, p1score, p2score, regret, regretTime1, regretTime2, justRegret, timer, countdown, passedTime);
+
             t=time(NULL);
         }
         

@@ -174,4 +174,14 @@ int checkDiagonalR(int turn,int TAx,int TAy,int *xarr,int *yarr){
 }
 
 
-    kill
+    ```c
+    void kill(int turn, int *xarr, int *yarr) {
+        int killNumber = turn * 0.3;
+
+        for (int i=0;i<killNumber; ++i) {
+            int index = rand() % turn;
+            xarr[index] = -1; // Assuming -1 indicates a null or removed value
+            yarr[index] = -1; // Assuming -1 indicates a null or removed value
+        }
+    }
+    ```
