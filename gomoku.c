@@ -383,13 +383,17 @@ int main(void){
                         available=false;
                         break;
                     }
-                    if(xarr2[i-1]==TAx&&yarr2[i-1]==TAy){
+                }
+
+                for(int i=0;i<turn2;++i){
+                    if(xarr2[i]==TAx&&yarr2[i]==TAy){
                         printf("Invalid move\n");
                         available=false;
                         break;
                     }
-
                 }
+
+                
                 if(!available){
                     available=true;
                     continue;
@@ -400,17 +404,17 @@ int main(void){
                     yarr1[turn1]=TAy;
                     ++turn1;
                     if(checkHorizontal(turn1,TAy,xarr1,yarr1)||checkHorizontal(turn1,TAx,yarr1,xarr1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,-1)){
-                        
+                    
                         ++p1score;
                         if(p1score>=winScore){
                             win=1;
                             end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2);
                             p1score=0;
                             p2score=0;
+                            player=1;
                             if(leave==1)return 0;
-                        }
+                        }else player=2;
                     }
-                    //else if(win!=1)player=2;
                     else player=2;
                 }else if(player==2){
                     xarr2[turn2]=TAx;
@@ -424,10 +428,10 @@ int main(void){
                             end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2);
                             p1score=0;
                             p2score=0;
+                            player=1;
                             if(leave==1)return 0;
-                        }
+                        }else player=1;
                     }
-                    //else if(win!=2)player=1;
                     else player=1;
                 }
                 
