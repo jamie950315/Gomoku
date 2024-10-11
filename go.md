@@ -8,7 +8,7 @@ p1turn
 
     
     
-    check horizontal  (int TAy) (code already generated)
+    check horizontal  (int TAy) 
 //check how many index y=TAy
 for{
     if (yarr[i])==TAy{
