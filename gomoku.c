@@ -303,13 +303,16 @@ int main(void){
                         available=false;
                         break;
                     }
-                    if(xarr2[i-1]==TAx&&yarr2[i-1]==TAy){
+                }
+
+                for(int i=0;i<turn2;++i){
+                    if(xarr2[i]==TAx&&yarr2[i]==TAy){
                         printf("Invalid move\n");
                         available=false;
                         break;
                     }
-
                 }
+
                 if(!available){
                     available=true;
                     continue;
@@ -344,13 +347,13 @@ int main(void){
                 end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2);
                 if(leave==1)return 0;
             }else if(move=='r'&&regret){
-                    if(player==2&&turn2>0&&regretTime2>0){
+                    if(player==2&&turn2>0&&regretTime1>0){
                         player=1;
                         --turn1;
                         --regretTime1;
                         TAx = xarr1[turn1];
                         TAy = yarr1[turn1];
-                    }else if(player==1&&turn1>0&&regretTime1>0){
+                    }else if(player==1&&turn1>0&&regretTime2>0){
                         player=2;
                         --turn2;
                         --regretTime2;
@@ -442,13 +445,13 @@ int main(void){
                 end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2);
                 if(leave==1)return 0;
             }else if(move=='r'&&regret){
-                    if(player==2&&turn2>0&&regretTime2>0){
+                    if(player==2&&turn2>0&&regretTime1>0){
                         player=1;
                         --turn1;
                         --regretTime1;
                         TAx = xarr1[turn1];
                         TAy = yarr1[turn1];
-                    }else if(player==1&&turn1>0&&regretTime1>0){
+                    }else if(player==1&&turn1>0&&regretTime2>0){
                         player=2;
                         --turn2;
                         --regretTime2;
