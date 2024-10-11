@@ -172,3 +172,6 @@ int checkDiagonalR(int turn,int TAx,int TAy,int *xarr,int *yarr){
     free(checkIndex);
     return 0;
 }
+
+
+    kill

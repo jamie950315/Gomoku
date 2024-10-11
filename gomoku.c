@@ -148,9 +148,9 @@ void draw(int TAx,int TAy,int player,int size, int *xarr1, int *yarr1, int turn1
             for(int k=0; k<turn1; ++k){
                 if(xarr1[k] == j && yarr1[k] == i){
                     if(j == TAx && i == TAy){
-                        printf("W ");
+                        printf("∞ ");
                     } else {
-                        printf("O ");
+                        printf("○ ");
                     }
                     printed = true;
                     break;
@@ -159,9 +159,9 @@ void draw(int TAx,int TAy,int player,int size, int *xarr1, int *yarr1, int turn1
             for(int k=0; k<turn2; ++k){
                 if(xarr2[k] == j && yarr2[k] == i){
                     if(j == TAx && i == TAy){
-                        printf("W ");
+                        printf("∞ ");
                     } else {
-                        printf("X ");
+                        printf("● ");
                     }
                     printed = true;
                     break;
@@ -169,10 +169,22 @@ void draw(int TAx,int TAy,int player,int size, int *xarr1, int *yarr1, int turn1
             }
             if(!printed){
                 if(j==TAx && i==TAy){
-                    if(player==1) printf("O ");
-                    else if(player==2) printf("X ");
+                    if(player==1) printf("○ ");
+                    else if(player==2) printf("● ");
                 }else{
-                    printf(". ");
+
+                    if(j==0){
+                        if(i==0) printf("┌ ");
+                        else if(i==size-1) printf("└ ");
+                        else printf("├ ");
+                    }else if(j==size-1){
+                        if(i==0) printf("┐ ");
+                        else if(i==size-1) printf("┘ ");
+                        else printf("┤ ");
+                    }else if(i==0) printf("┬ ");
+                    else if(i==size-1) printf("┴ ");
+                    else printf("┼ ");
+                    
                 }
             }
         }
