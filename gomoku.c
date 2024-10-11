@@ -103,13 +103,22 @@ void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*p
         scanf(" %c", &*move);
     }
     if(*move=='n'){
-        free(xarr1);
-        free(yarr1);
-        free(xarr2);
-        free(yarr2);
+        free(*xarr1);
+        free(*yarr1);
+        free(*xarr2);
+        free(*yarr2);
         *leave=1;
-    }else if(*move=='m')*mode=0;
-    else if(*move=='y'){
+    }else if(*move=='m'){
+        free(*xarr1);
+        free(*yarr1);
+        free(*xarr2);
+        free(*yarr2);
+        *mode=0;
+    }else if(*move=='y'){
+        free(*xarr1);
+        free(*yarr1);
+        free(*xarr2);
+        free(*yarr2);
         
         *win=0;
         *turn1=0;
@@ -267,10 +276,7 @@ int main(void){
             if(regret) printf("Regret P1:%d   P2:%d\n",regretTime1,regretTime2);
             printf("Player %d's turn\n",player);
             printf("Enter your move: ");
-            xarr1[0]=100;
-            yarr1[0]=100;
-            xarr2[0]=100;
-            yarr2[0]=100;
+            
         }
 
         if(mode==1){
@@ -279,10 +285,6 @@ int main(void){
             if(regret) printf("Regret P1:%d   P2:%d\n",regretTime1,regretTime2);
             printf("Player %d's turn\n",player);
             printf("Enter your move: ");
-            xarr1[0]=100;
-            yarr1[0]=100;
-            xarr2[0]=100;
-            yarr2[0]=100;
         }
 
         while(mode==1){
@@ -301,7 +303,7 @@ int main(void){
                         available=false;
                         break;
                     }
-                    if(xarr2[i]==TAx&&yarr2[i]==TAy){
+                    if(xarr2[i-1]==TAx&&yarr2[i-1]==TAy){
                         printf("Invalid move\n");
                         available=false;
                         break;
@@ -324,7 +326,7 @@ int main(void){
                         if(leave==1)return 0;
                         
                     }
-                    player=2;
+                    else player=2;
                 }else if(player==2){
                     xarr2[turn2]=TAx;
                     yarr2[turn2]=TAy;
@@ -336,13 +338,12 @@ int main(void){
                         if(leave==1)return 0;
                         
                     }
-                    player=1;
+                    else player=1;
                 }
             }else if(move=='q'){
                 end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2);
                 if(leave==1)return 0;
             }else if(move=='r'&&regret){
-                    // Revert the last move
                     if(player==2&&turn2>0&&regretTime2>0){
                         player=1;
                         --turn1;
@@ -382,7 +383,7 @@ int main(void){
                         available=false;
                         break;
                     }
-                    if(xarr2[i]==TAx&&yarr2[i]==TAy){
+                    if(xarr2[i-1]==TAx&&yarr2[i-1]==TAy){
                         printf("Invalid move\n");
                         available=false;
                         break;
@@ -399,31 +400,35 @@ int main(void){
                     yarr1[turn1]=TAy;
                     ++turn1;
                     if(checkHorizontal(turn1,TAy,xarr1,yarr1)||checkHorizontal(turn1,TAx,yarr1,xarr1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,-1)){
-                        win=1;
+                        
                         ++p1score;
                         if(p1score>=winScore){
+                            win=1;
                             end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2);
                             p1score=0;
                             p2score=0;
                             if(leave==1)return 0;
                         }
                     }
-                    player=2;
+                    //else if(win!=1)player=2;
+                    else player=2;
                 }else if(player==2){
                     xarr2[turn2]=TAx;
                     yarr2[turn2]=TAy;
                     ++turn2;
                     if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
-                        win=2;
+                        
                         ++p2score;
                         if(p2score>=winScore){
+                            win=2;
                             end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2);
                             p1score=0;
                             p2score=0;
                             if(leave==1)return 0;
                         }
                     }
-                    player=1;
+                    //else if(win!=2)player=1;
+                    else player=1;
                 }
                 
             }else if(move=='q'){
