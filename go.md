@@ -185,3 +185,93 @@ int checkDiagonalR(int turn,int TAx,int TAy,int *xarr,int *yarr){
         }
     }
     ```
+
+void cpuPlayer(int TAx,int TAy,int*xarr2,int*yarr2,int*turn2,int size,int*xarr1,int*yarr1){
+        int direction;
+        bool available=false;
+        int failTime=0;
+        int expand=1;
+
+        while(!available){
+
+            direction=rand()%8;
+
+
+            switch(direction){
+
+                case 0: 
+                    if(TAx-expand>=0){
+                        xarr2[*turn2]=TAx-expand;
+                        yarr2[*turn2]=TAy;
+                    }
+                    break;
+                case 1: 
+                    if(TAx+expand<=size-1){
+                        xarr2[*turn2]=TAx+expand;
+                        yarr2[*turn2]=TAy;
+                    }
+                    break;
+                case 2: 
+                    if(TAy-expand>=0){
+                        xarr2[*turn2]=TAx;
+                        yarr2[*turn2]=TAy-expand;
+                    }
+                    break;
+                case 3: 
+                    if(TAy+expand<=size-1){
+                        xarr2[*turn2]=TAx;
+                        yarr2[*turn2]=TAy+expand;
+                    }
+                    break;
+                case 4: 
+                    if(TAx-expand>=0&&TAy-expand>=0){
+                        xarr2[*turn2]=TAx-expand;
+                        yarr2[*turn2]=TAy-expand;
+                    }
+                    break;
+                case 5: 
+                    if(TAx+expand<=size-1&&TAy-expand>=0){
+                        xarr2[*turn2]=TAx+expand;
+                        yarr2[*turn2]=TAy-expand;
+                    }
+                    break;
+                case 6: 
+                    if(TAx-expand>=0&&TAy+expand<=size-1){
+                        xarr2[*turn2]=TAx-expand;
+                        yarr2[*turn2]=TAy+expand;
+                    }
+                    break;
+                case 7: 
+                    if(TAx+expand<=size-1&&TAy+expand<=size-1){
+                        xarr2[*turn2]=TAx+expand;
+                        yarr2[*turn2]=TAy+expand;
+                    }
+                    break;
+            }
+
+            for(int i=0;i<*turn2+1;++i){
+                if(xarr1[i]==xarr2[*turn2]&&yarr1[i]==yarr2[*turn2]){
+                    available=false;
+                    ++failTime;
+                    break;
+                }else available=true;
+            }
+            
+            if(available){
+                for(int i=0;i<*turn2;++i){
+                    if(xarr2[i]==xarr2[*turn2]&&yarr2[i]==yarr2[*turn2]){
+                        available=false;
+                        ++failTime;
+                        break;
+                    }else available=true;
+                }
+            }
+
+            
+            expand=1+failTime/8;
+
+        }
+
+        ++*turn2;
+
+}

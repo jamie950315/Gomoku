@@ -100,56 +100,92 @@ void kill(int turn,int*xarr,int*yarr,int killRate){
         }
     }
 
-void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*player,int*TAx,int*TAy,int*xarr1,int*yarr1,int*xarr2,int*yarr2,int p1score,int p2score,int*regretTime1,int*regretTime2,int*passedTime,time_t*t,int regretTime,bool*justRegret){
-    printf("\n");
-    printf("\n");
-    printf("## Game Over! ##\n");
-    if(*win!=0)printf("Player %d Wins!\n",*win);
-    printf("Score  P1:%d   P2:%d\n",p1score,p2score);
-    printf("Continue? (y/n/m): ");
-    scanf(" %c", &*move);
-    while(*move != 'y' && *move != 'n'&& *move != 'm') {
-        printf("\nEnter a valid option: ");
-        scanf(" %c", &*move);
-    }
-    if(*move=='n'){
-        free(*xarr1);
-        free(*yarr1);
-        free(*xarr2);
-        free(*yarr2);
-        *leave=1;
-    }else if(*move=='m'){
-        free(*xarr1);
-        free(*yarr1);
-        free(*xarr2);
-        free(*yarr2);
-        *mode=0;
-    }else if(*move=='y'){
-        free(*xarr1);
-        free(*yarr1);
-        free(*xarr2);
-        free(*yarr2);
-        
-        *win=0;
-        *turn1=0;
-        *turn2=0;
-        *player=1;
-        *TAx=0;
-        *TAy=0;
-        *passedTime=0;
-        *t=time(NULL);
+void cpuPlayer(int TAx,int TAy,int*xarr2,int*yarr2,int*turn2,int size,int*xarr1,int*yarr1){
+        int direction;
+        bool available=false;
+        int failTime=0;
+        int expand=1;
 
-        *xarr1=(int*)calloc(*size**size,sizeof(int));
-        *yarr1=(int*)calloc(*size**size,sizeof(int));
-        *xarr2=(int*)calloc(*size**size,sizeof(int));
-        *yarr2=(int*)calloc(*size**size,sizeof(int));
+        while(!available){
 
-        *regretTime1=regretTime;
-        *regretTime2=regretTime;
-        *justRegret=false;
-        
+            direction=rand()%8;
 
-    }
+            switch(direction){
+
+                case 0: 
+                    if(TAx-expand>=0){
+                        xarr2[*turn2]=TAx-expand;
+                        yarr2[*turn2]=TAy;
+                    }
+                    break;
+                case 1: 
+                    if(TAx+expand<=size-1){
+                        xarr2[*turn2]=TAx+expand;
+                        yarr2[*turn2]=TAy;
+                    }
+                    break;
+                case 2: 
+                    if(TAy-expand>=0){
+                        xarr2[*turn2]=TAx;
+                        yarr2[*turn2]=TAy-expand;
+                    }
+                    break;
+                case 3: 
+                    if(TAy+expand<=size-1){
+                        xarr2[*turn2]=TAx;
+                        yarr2[*turn2]=TAy+expand;
+                    }
+                    break;
+                case 4: 
+                    if(TAx-expand>=0&&TAy-expand>=0){
+                        xarr2[*turn2]=TAx-expand;
+                        yarr2[*turn2]=TAy-expand;
+                    }
+                    break;
+                case 5: 
+                    if(TAx+expand<=size-1&&TAy-expand>=0){
+                        xarr2[*turn2]=TAx+expand;
+                        yarr2[*turn2]=TAy-expand;
+                    }
+                    break;
+                case 6: 
+                    if(TAx-expand>=0&&TAy+expand<=size-1){
+                        xarr2[*turn2]=TAx-expand;
+                        yarr2[*turn2]=TAy+expand;
+                    }
+                    break;
+                case 7: 
+                    if(TAx+expand<=size-1&&TAy+expand<=size-1){
+                        xarr2[*turn2]=TAx+expand;
+                        yarr2[*turn2]=TAy+expand;
+                    }
+                    break;
+            }
+
+            for(int i=0;i<*turn2+1;++i){
+                if(xarr1[i]==xarr2[*turn2]&&yarr1[i]==yarr2[*turn2]){
+                    available=false;
+                    ++failTime;
+                    break;
+                }else available=true;
+            }
+            
+            if(available){
+                for(int i=0;i<*turn2;++i){
+                    if(xarr2[i]==xarr2[*turn2]&&yarr2[i]==yarr2[*turn2]){
+                        available=false;
+                        ++failTime;
+                        break;
+                    }else available=true;
+                }
+            }
+
+            
+            expand=1+failTime/16;
+
+        }
+
+        ++*turn2;
 
 }
 
@@ -205,6 +241,60 @@ void draw(int TAx,int TAy,int player,int size, int *xarr1, int *yarr1, int turn1
     }
 }
 
+void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*player,int*TAx,int*TAy,int*xarr1,int*yarr1,int*xarr2,int*yarr2,int p1score,int p2score,int*regretTime1,int*regretTime2,int*passedTime,time_t*t,int regretTime,bool*justRegret){
+    system("cls");
+    draw(*TAx,*TAy,*player,*size, xarr1, yarr1, *turn1, xarr2, yarr2, *turn2);
+    printf("\n");
+    printf("## Game Over! ##\n");
+    if(*win!=0)printf("Player %d Wins!\n",*win);
+    printf("Score  P1:%d   P2:%d\n",p1score,p2score);
+    printf("Continue? (y/n/m): ");
+    scanf(" %c", &*move);
+    while(*move != 'y' && *move != 'n'&& *move != 'm') {
+        printf("\nEnter a valid option: ");
+        scanf(" %c", &*move);
+    }
+    if(*move=='n'){
+        free(xarr1);
+        free(yarr1);
+        free(xarr2);
+        free(yarr2);
+        *leave=1;
+    }else if(*move=='m'){
+        free(xarr1);
+        free(yarr1);
+        free(xarr2);
+        free(yarr2);
+        *mode=0;
+    }else if(*move=='y'){
+        free(xarr1);
+        free(yarr1);
+        free(xarr2);
+        free(yarr2);
+        
+        *win=0;
+        *turn1=0;
+        *turn2=0;
+        *player=1;
+        *TAx=0;
+        *TAy=0;
+        *passedTime=0;
+        *t=time(NULL);
+
+        xarr1=(int*)calloc(*size**size,sizeof(int));
+        yarr1=(int*)calloc(*size**size,sizeof(int));
+        xarr2=(int*)calloc(*size**size,sizeof(int));
+        yarr2=(int*)calloc(*size**size,sizeof(int));
+
+        *regretTime1=regretTime;
+        *regretTime2=regretTime;
+        *justRegret=false;
+        
+
+    }
+
+}
+
 void render(int TAx,int TAy,int player,int size, int *xarr1, int *yarr1, int turn1, int *xarr2, int *yarr2, int turn2, int p1score, int p2score, int regret, int regretTime1, int regretTime2, bool justRegret, int timer, int countdown, int passedTime){
     draw(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2);
     printf("Score  P1:%d   P2:%d\n",p1score,p2score);
@@ -242,6 +332,8 @@ int main(void){
         int passedTime=0;
         
         int killRate=3;
+
+        srand(time(NULL));
         
         int *xarr1=(int*)calloc(size*size,sizeof(int));
         int *yarr1=(int*)calloc(size*size,sizeof(int));
@@ -251,22 +343,23 @@ int main(void){
         int win=0;
         int leave=0;
         
-        system("cls");
-        printf("######################\n");
-        printf("######  Gomoku  ######\n");
-        printf("####### 1  Play ######\n");
-        printf("####### 2 Scores #####\n");
-        printf("####### 3 Option #####\n");
-        printf("####### 4  Exit ######\n");
-        printf("######################\n");
+        //system("cls");
+        printf("########################\n");
+        printf("#######  Gomoku  #######\n");
+        printf("####### 1  Play  #######\n");
+        printf("####### 2 Scores #######\n");
+        printf("####### 3  CPU   #######\n");
+        printf("####### 4 Option #######\n");
+        printf("####### 5  Exit  #######\n");
+        printf("########################\n");
         
         mode=enterInt(mode);
-        while(mode!=1&&mode!=2&&mode!=3&&mode!=4&&mode!=5) {
+        while(mode!=1&&mode!=2&&mode!=3&&mode!=4&&mode!=5&&mode!=6){
             printf("\nEnter a valid option: ");
             mode=enterInt(mode);
         }
 
-        if(mode==3){
+        if(mode==4){
             system("cls");
             printf("Enter the size of the board: ");
             size=enterInt(size);
@@ -297,29 +390,29 @@ int main(void){
                 countdown=enterInt(countdown);
             }
             
-            printf("Apply to which mode? (1/2):");
+            printf("Apply to which mode? (1/2/3):");
             mode=enterInt(mode);
-            while(mode!=1&&mode!=2) {
+            while(mode!=1&&mode!=2&&mode!=3){
                 printf("\nEnter a valid option: ");
                 mode=enterInt(mode);
             }
 
-        }else if(mode==4){
+        }else if(mode==5){
             free(xarr1);
             free(yarr1);
             free(xarr2);
             free(yarr2);
             return 0;
-        }else if(mode==5){
+        }else if(mode==6){
         system("cls");
-        printf("######################\n");
-        printf("######  Gomoku  ######\n");
-        printf("###  NTUST PROJECT ###\n");
-        printf("######################\n");
-        printf("#####	CREDIT	 #####\n");
-        printf("##### Jamie Chen #####\n");
-        printf("#####  OCT.2024  #####\n");
-        printf("######################\n");
+        printf("########################\n");
+        printf("#######  Gomoku  #######\n");
+        printf("####  NTUST PROJECT ####\n");
+        printf("########################\n");
+        printf("######   CREDIT	  ######\n");
+        printf("###### Jamie Chen ######\n");
+        printf("######  OCT.2024  ######\n");
+        printf("########################\n");
         printf("\n");
         printf("Press any key to menu:\n");
         scanf(" %c",&move);
@@ -329,7 +422,7 @@ int main(void){
             printf("\n");
             printf("Enter win score: ");
             winScore=enterInt(winScore);
-            printf("Enter kill rate: ");
+            printf("Enter kill rate: (0~10)");
             killRate=enterInt(killRate);
 
             render(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2, p1score, p2score, regret, regretTime1, regretTime2, justRegret, timer, countdown, passedTime);
@@ -569,6 +662,111 @@ int main(void){
         
     }
     
+    if(mode==3){
+        render(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2, p1score, p2score, regret, regretTime1, regretTime2, justRegret, timer, countdown, passedTime);
+        t=time(NULL);
+    }
+
+    while(mode==3){
+        if(kbhit()){
+            move=getch();
+            if(move=='w'&&TAy>0) --TAy;
+            else if(move=='s'&&TAy<size-1) ++TAy;
+            else if(move=='a'&&TAx>0) --TAx;
+            else if(move=='d'&&TAx<size-1) ++TAx;
+            else if(move=='f'){
+
+                for(int i=0;i<turn1;++i){
+                    if(xarr1[i]==TAx&&yarr1[i]==TAy){
+                        printf("\nInvalid move");
+                        available=false;
+                        break;
+                    }
+                }
+
+                for(int i=0;i<turn2;++i){
+                    if(xarr2[i]==TAx&&yarr2[i]==TAy){
+                        printf("\nInvalid move");
+                        available=false;
+                        break;
+                    }
+                }
+
+                if(!available){
+                    available=true;
+                    continue;
+                }
+
+                
+                    xarr1[turn1]=TAx;
+                    yarr1[turn1]=TAy;
+                    ++turn1;
+                    if(checkHorizontal(turn1,TAy,xarr1,yarr1)||checkHorizontal(turn1,TAx,yarr1,xarr1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,-1)){
+                        win=1;
+                        ++p1score;
+                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                        if(leave==1)return 0;
+                        
+                    }
+                    else player=2;
+                    cpuPlayer(TAx,TAy,xarr2,yarr2,&turn2,size,xarr1,yarr1);
+                    if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
+                        win=2;
+                        ++p2score;
+                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                        if(leave==1)return 0;
+                        
+                    }
+                    else player=1;
+                    t=time(NULL);
+                    passedTime=0;
+                    justRegret=false;
+                
+            }else if(move=='q'){
+                end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                if(leave==1)return 0;
+            }else if(move=='r'&&regret&&!justRegret){
+                    if(player==1&&turn1>0&&regretTime1>0){
+                        player=1;
+                        --turn1;
+                        --regretTime1;
+                        TAx = xarr1[turn1];
+                        TAy = yarr1[turn1];
+                        --turn2;
+                        xarr2[turn2]=-1;
+                        yarr2[turn2]=-1;
+                        justRegret=true;
+                    }
+            }
+            render(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2, p1score, p2score, regret, regretTime1, regretTime2, justRegret, timer, countdown, passedTime);
+            
+        }
+
+        if(difftime(time(NULL),t)>=1&&timer&&!justRegret){
+            ++passedTime;
+            if(passedTime>=countdown){
+                passedTime=0;
+                if(player==1){
+                    cpuPlayer(TAx,TAy,xarr2,yarr2,&turn2,size,xarr1,yarr1);
+                    if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
+                        win=2;
+                        ++p2score;
+                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                        if(leave==1)return 0;
+                        
+                    }
+                    else player=1;
+                }else if(player==2){
+                    player=1;
+                }
+            }
+
+            render(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2, p1score, p2score, regret, regretTime1, regretTime2, justRegret, timer, countdown, passedTime);
+            
+            t=time(NULL);
+        }
+    }
+
     }
     
     return 0;
