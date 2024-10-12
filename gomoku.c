@@ -343,7 +343,7 @@ int main(void){
         int win=0;
         int leave=0;
         
-        //system("cls");
+        system("cls");
         printf("########################\n");
         printf("#######  Gomoku  #######\n");
         printf("####### 1  Play  #######\n");
