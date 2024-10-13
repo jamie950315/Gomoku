@@ -241,9 +241,12 @@ void draw(int TAx,int TAy,int player,int size, int *xarr1, int *yarr1, int turn1
     }
 }
 
-void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*player,int*TAx,int*TAy,int*xarr1,int*yarr1,int*xarr2,int*yarr2,int p1score,int p2score,int*regretTime1,int*regretTime2,int*passedTime,time_t*t,int regretTime,bool*justRegret){
-    system("cls");
-    draw(*TAx,*TAy,*player,*size, xarr1, yarr1, *turn1, xarr2, yarr2, *turn2);
+void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*player,int*TAx,int*TAy,int**xarr1,int**yarr1,int**xarr2,int**yarr2,int p1score,int p2score,int*regretTime1,int*regretTime2,int*passedTime,time_t*t,int regretTime,bool*justRegret){
+    free(*xarr1);
+    free(*yarr1);
+    free(*xarr2);
+    free(*yarr2);
+    printf("\n");
     printf("\n");
     printf("## Game Over! ##\n");
     if(*win!=0)printf("Player %d Wins!\n",*win);
@@ -255,23 +258,10 @@ void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*p
         scanf(" %c", &*move);
     }
     if(*move=='n'){
-        free(xarr1);
-        free(yarr1);
-        free(xarr2);
-        free(yarr2);
         *leave=1;
     }else if(*move=='m'){
-        free(xarr1);
-        free(yarr1);
-        free(xarr2);
-        free(yarr2);
         *mode=0;
     }else if(*move=='y'){
-        free(xarr1);
-        free(yarr1);
-        free(xarr2);
-        free(yarr2);
-        
         *win=0;
         *turn1=0;
         *turn2=0;
@@ -281,16 +271,15 @@ void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*p
         *passedTime=0;
         *t=time(NULL);
 
-        xarr1=(int*)calloc(*size**size,sizeof(int));
-        yarr1=(int*)calloc(*size**size,sizeof(int));
-        xarr2=(int*)calloc(*size**size,sizeof(int));
-        yarr2=(int*)calloc(*size**size,sizeof(int));
+        *xarr1=(int*)calloc(*size**size,sizeof(int));
+        *yarr1=(int*)calloc(*size**size,sizeof(int));
+        *xarr2=(int*)calloc(*size**size,sizeof(int));
+        *yarr2=(int*)calloc(*size**size,sizeof(int));
 
         *regretTime1=regretTime;
         *regretTime2=regretTime;
         *justRegret=false;
         
-
     }
 
 }
@@ -409,7 +398,7 @@ int main(void){
         printf("#######  Gomoku  #######\n");
         printf("####  NTUST PROJECT ####\n");
         printf("########################\n");
-        printf("######   CREDIT	  ######\n");
+        printf("######   CREDIT   ######\n");
         printf("###### Jamie Chen ######\n");
         printf("######  OCT.2024  ######\n");
         printf("########################\n");
@@ -474,7 +463,7 @@ int main(void){
                     if(checkHorizontal(turn1,TAy,xarr1,yarr1)||checkHorizontal(turn1,TAx,yarr1,xarr1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,-1)){
                         win=1;
                         ++p1score;
-                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                         if(leave==1)return 0;
                         
                     }
@@ -489,7 +478,7 @@ int main(void){
                     if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
                         win=2;
                         ++p2score;
-                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                         if(leave==1)return 0;
                         
                     }
@@ -499,7 +488,7 @@ int main(void){
                     justRegret=false;
                 }
             }else if(move=='q'){
-                end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                 if(leave==1)return 0;
             }else if(move=='r'&&regret&&!justRegret){
                     if(player==2&&turn2>0&&regretTime1>0){
@@ -582,7 +571,7 @@ int main(void){
                         kill(turn1, xarr1, yarr1, killRate);
                         if(p1score>=winScore){
                             win=1;
-                            end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                            end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                             p1score=0;
                             p2score=0;
                             player=1;
@@ -603,7 +592,7 @@ int main(void){
                         kill(turn2, xarr2, yarr2, killRate);
                         if(p2score>=winScore){
                             win=2;
-                            end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                            end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                             p1score=0;
                             p2score=0;
                             player=1;
@@ -620,7 +609,7 @@ int main(void){
                 if(p1score>p2score)win=1;
                 else if(p1score<p2score)win=2;
                 else win=0;
-                end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                 if(leave==1)return 0;
             }else if(move=='r'&&regret&&!justRegret){
                     if(player==2&&turn2>0&&regretTime1>0){
@@ -704,7 +693,7 @@ int main(void){
                     if(checkHorizontal(turn1,TAy,xarr1,yarr1)||checkHorizontal(turn1,TAx,yarr1,xarr1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,1)||checkDiagonalR(turn1,TAx,TAy,xarr1,yarr1,-1)){
                         win=1;
                         ++p1score;
-                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                         if(leave==1)return 0;
                         
                     }
@@ -713,7 +702,7 @@ int main(void){
                     if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
                         win=2;
                         ++p2score;
-                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                         if(leave==1)return 0;
                         
                     }
@@ -723,7 +712,7 @@ int main(void){
                     justRegret=false;
                 
             }else if(move=='q'){
-                end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                 if(leave==1)return 0;
             }else if(move=='r'&&regret&&!justRegret){
                     if(player==1&&turn1>0&&regretTime1>0){
@@ -751,7 +740,7 @@ int main(void){
                     if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
                         win=2;
                         ++p2score;
-                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, xarr1, yarr1, xarr2, yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
+                        end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                         if(leave==1)return 0;
                         
                     }

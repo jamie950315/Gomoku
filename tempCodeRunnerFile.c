@@ -1,15 +1,1 @@
-for(int i=0;i<turn1;++i){
-                    if(xarr1[i]==TAx&&yarr1[i]==TAy){
-                        printf("\nInvalid move");
-                        available=false;
-                        break;
-                    }
-                }
-
-                for(int i=0;i<turn2;++i){
-                    if(xarr2[i]==TAx&&yarr2[i]==TAy){
-                        printf("\nInvalid move");
-                        available=false;
-                        break;
-                    }
-                }
+end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegr
