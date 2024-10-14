@@ -697,8 +697,10 @@ int main(void){
                         if(leave==1)return 0;
                         
                     }
-                    else player=2;
-                    cpuPlayer(TAx,TAy,xarr2,yarr2,&turn2,size,xarr1,yarr1);
+                    else {
+                        player=2;
+                        cpuPlayer(TAx,TAy,xarr2,yarr2,&turn2,size,xarr1,yarr1);
+                    }
                     if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
                         win=2;
                         ++p2score;
