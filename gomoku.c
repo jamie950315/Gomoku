@@ -92,7 +92,7 @@ int enterInt(int enterInt){
 
 void kill(int turn,int*xarr,int*yarr,int killRate){ 
         int killNumber=turn*killRate*0.1;
-
+        srand(time(NULL));
         for (int i=0;i<killNumber; ++i) {
             int index=rand() % turn;
             xarr[index]=-1; 
@@ -105,6 +105,7 @@ void cpuPlayer(int TAx,int TAy,int*xarr2,int*yarr2,int*turn2,int size,int*xarr1,
         bool available=false;
         int failTime=0;
         int expand=1;
+        srand(time(NULL));        
 
         while(!available){
 
@@ -262,6 +263,7 @@ void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*p
     }else if(*move=='m'){
         *mode=0;
     }else if(*move=='y'){
+        srand(time(NULL));
         *win=0;
         *turn1=0;
         *turn2=0;
