@@ -747,6 +747,7 @@ int main(void){
                     if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
                         win=2;
                         ++p2score;
+                         draw(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2);
                         end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                         if(leave==1)return 0;
                         
@@ -787,6 +788,7 @@ int main(void){
                     if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
                         win=2;
                         ++p2score;
+                        draw(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2);
                         end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
                         if(leave==1)return 0;
                         
