@@ -261,8 +261,10 @@ void end(int*win,char*move,int*leave,int*mode,int*size,int*turn1,int*turn2,int*p
     if(*move=='n'){
         *leave=1;
     }else if(*move=='m'){
+        while(getchar()!='\n');
         *mode=0;
     }else if(*move=='y'){
+        while(getchar()!='\n');
         srand(time(NULL));
         *win=0;
         *turn1=0;
@@ -359,6 +361,7 @@ int main(void){
             while(move!='y'&&move!='n'){
                 printf("\nEnter a valid option: ");
                 scanf(" %c",&move);
+                while(getchar()!='\n');
             }
             if(move=='y') regret=true;
             else if(move=='n') regret=false;
@@ -373,6 +376,7 @@ int main(void){
             while(move!='y'&&move!='n'){
                 printf("\nEnter a valid option: ");
                 scanf(" %c",&move);
+                while(getchar()!='\n');
             }
             if(move=='y') timer=true;
             else if(move=='n') timer=false;
