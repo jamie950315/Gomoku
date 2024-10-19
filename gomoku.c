@@ -363,8 +363,14 @@ int main(void){
                 scanf(" %c",&move);
                 while(getchar()!='\n');
             }
-            if(move=='y') regret=true;while(getchar()!='\n');
-            else if(move=='n') regret=false;while(getchar()!='\n');
+            if(move=='y') {
+                regret=true;
+                while(getchar()!='\n');
+            }
+            else if(move=='n') {
+                regret=false;
+                while(getchar()!='\n');
+            }
             if(regret){
                 printf("Enter times can regret: ");
                 regretTime=enterInt(regretTime);
@@ -378,8 +384,14 @@ int main(void){
                 scanf(" %c",&move);
                 while(getchar()!='\n');
             }
-            if(move=='y') timer=true;while(getchar()!='\n');
-            else if(move=='n') timer=false;while(getchar()!='\n');
+            if(move=='y') {
+                timer=true;
+                while(getchar()!='\n');
+            }
+            else if(move=='n') {
+                timer=false;
+                while(getchar()!='\n');
+            }
             if(timer){
                 printf("Enter countdown time: ");
                 countdown=enterInt(countdown);
