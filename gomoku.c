@@ -189,8 +189,7 @@ void cpuPlayer(int TAx,int TAy,int*xarr2,int*yarr2,int*turn2,int size,int*xarr1,
 
         ++*turn2;
     
-        TAx=xarr2[*turn2];
-        TAy=yarr2[*turn2];
+        
 
 }
 
@@ -742,6 +741,8 @@ int main(void){
                     else {
                         player=2;
                         cpuPlayer(TAx,TAy,xarr2,yarr2,&turn2,size,xarr1,yarr1);
+                        TAx=xarr2[turn2-1];
+                        TAy=yarr2[turn2-1];
                     }
                     if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
                         win=2;
@@ -781,6 +782,8 @@ int main(void){
                 passedTime=0;
                 if(player==1){
                     cpuPlayer(TAx,TAy,xarr2,yarr2,&turn2,size,xarr1,yarr1);
+                    TAx=xarr2[turn2-1];
+                    TAy=yarr2[turn2-1];
                     if(checkHorizontal(turn2,TAy,xarr2,yarr2)||checkHorizontal(turn2,TAx,yarr2,xarr2)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,1)||checkDiagonalR(turn2,TAx,TAy,xarr2,yarr2,-1)){
                         win=2;
                         ++p2score;
