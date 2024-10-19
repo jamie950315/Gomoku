@@ -186,7 +186,11 @@ void cpuPlayer(int TAx,int TAy,int*xarr2,int*yarr2,int*turn2,int size,int*xarr1,
 
         }
 
+
         ++*turn2;
+    
+        TAx=xarr2[*turn2];
+        TAy=yarr2[*turn2];
 
 }
 
@@ -406,6 +410,7 @@ int main(void){
                 printf("\nEnter a valid option: ");
                 mode=enterInt(mode);
             }
+            while(getchar()!='\n');
 
         }else if(mode==5){
             free(xarr1);
