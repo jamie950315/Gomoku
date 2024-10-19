@@ -354,8 +354,10 @@ int main(void){
 
         if(mode==4){
             system("cls");
+            while(getchar()!='\n');
             printf("Enter the size of the board: ");
             size=enterInt(size);
+            while(getchar()!='\n');
             printf("Enable regret? (y/n):");
             scanf(" %c",&move);
             while(move!='y'&&move!='n'){
@@ -377,6 +379,7 @@ int main(void){
                 regretTime1=regretTime;
                 regretTime2=regretTime;
             }
+            while(getchar()!='\n');
             printf("Enable timer? (y/n):");
             scanf(" %c",&move);
             while(move!='y'&&move!='n'){
@@ -396,7 +399,7 @@ int main(void){
                 printf("Enter countdown time: ");
                 countdown=enterInt(countdown);
             }
-            
+            while(getchar()!='\n');
             printf("Apply to which mode? (1/2/3):");
             mode=enterInt(mode);
             while(mode!=1&&mode!=2&&mode!=3){
