@@ -93,10 +93,14 @@ int enterInt(int enterInt){
 void kill(int turn,int*xarr,int*yarr,int killRate){ 
         int killNumber=turn*killRate*0.1;
         srand(time(NULL));
-        for (int i=0;i<killNumber; ++i) {
-            int index=rand() % turn;
-            xarr[index]=-1; 
-            yarr[index]=-1; 
+        int index;
+        for (int i=0;i<killNumber;) {
+            index=rand() % turn;
+            if(xarr[index]!=-1&&yarr[index]!=-1){
+                xarr[index]=-1; 
+                yarr[index]=-1; 
+                ++i;
+            }
         }
     }
 
