@@ -94,14 +94,25 @@ void kill(int turn,int*xarr,int*yarr,int killRate){
         int killNumber=turn*killRate*0.1;
         srand(time(NULL));
         int index;
-        for (int i=0;i<killNumber;) {
-            index=rand() % turn;
-            if(xarr[index]!=-1&&yarr[index]!=-1){
-                xarr[index]=-1; 
-                yarr[index]=-1; 
-                ++i;
-            }
+        
+        int *killIndex=(int*)calloc(turn,sizeof(int));
+        for(int i=0;i<turn;++i){
+            killIndex[i]=i;
         }
+        for(int i=0;i<turn;++i){
+            int index1=rand()%turn;
+            int index2=rand()%turn;
+            int temp=killIndex[index1];
+            killIndex[index1]=killIndex[index2];
+            killIndex[index2]=temp;
+        }
+        for(int i=0;i<killNumber;++i){
+            xarr[killIndex[i]]=-1;
+            yarr[killIndex[i]]=-1;
+        }
+        free(killIndex);
+
+
     }
 
 void cpuPlayer(int TAx,int TAy,int*xarr2,int*yarr2,int*turn2,int size,int*xarr1,int*yarr1){
@@ -365,7 +376,7 @@ int main(void){
             printf("Enter the size of the board: ");
             size=enterInt(size);
             while(getchar()!='\n');
-            printf("Enable regret? (y/n):");
+            printf("Enable regret? (y/n): ");
             scanf(" %c",&move);
             while(move!='y'&&move!='n'){
                 printf("\nEnter a valid option: ");
@@ -387,7 +398,7 @@ int main(void){
                 regretTime2=regretTime;
             }
             while(getchar()!='\n');
-            printf("Enable timer? (y/n):");
+            printf("Enable timer? (y/n): ");
             scanf(" %c",&move);
             while(move!='y'&&move!='n'){
                 printf("\nEnter a valid option: ");
@@ -407,7 +418,7 @@ int main(void){
                 countdown=enterInt(countdown);
             }
             while(getchar()!='\n');
-            printf("Apply to which mode? (1/2/3):");
+            printf("Apply to which mode? (1/2/3): ");
             mode=enterInt(mode);
             while(mode!=1&&mode!=2&&mode!=3){
                 printf("\nEnter a valid option: ");
@@ -440,7 +451,7 @@ int main(void){
             printf("\n");
             printf("Enter win score: ");
             winScore=enterInt(winScore);
-            printf("Enter kill rate: (0~10)");
+            printf("Enter kill rate (0~10): ");
             killRate=enterInt(killRate);
 
             render(TAx,TAy,player,size, xarr1, yarr1, turn1, xarr2, yarr2, turn2, p1score, p2score, regret, regretTime1, regretTime2, justRegret, timer, countdown, passedTime);
