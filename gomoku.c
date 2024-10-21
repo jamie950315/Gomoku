@@ -576,10 +576,6 @@ int main(void){
 
     while(mode==2){
         
-        if(turn1>=(size*size)/2+1){
-            end(&win, &move, &leave, &mode, &size, &turn1, &turn2, &player, &TAx, &TAy, &xarr1, &yarr1, &xarr2, &yarr2, p1score, p2score, &regretTime1, &regretTime2, &passedTime, &t, regretTime, &justRegret);
-            if(leave==1)return 0;
-        }
         
         if(kbhit()){
             move=getch();
